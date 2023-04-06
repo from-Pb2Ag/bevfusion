@@ -4,6 +4,9 @@ import os
 import random
 import time
 
+if os.environ.get('CUDA_VISIBLE_DEVICES', 'null') == 'null':
+    os.environ['CUDA_VISIBLE_DEVICES'] = "0, 1, 5, 6, 7"
+
 import numpy as np
 import torch
 from mmcv import Config

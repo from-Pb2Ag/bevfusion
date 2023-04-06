@@ -3,6 +3,9 @@ import copy
 import os
 import warnings
 
+if os.environ.get('CUDA_VISIBLE_DEVICES', 'null') == 'null':
+    os.environ['CUDA_VISIBLE_DEVICES'] = "0, 1, 5, 6, 7"
+
 import mmcv
 import torch
 from torchpack.utils.config import configs

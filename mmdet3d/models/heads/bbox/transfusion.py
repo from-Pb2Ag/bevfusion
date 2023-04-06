@@ -479,7 +479,10 @@ class TransFusionHead(nn.Module):
         assign_result_ensemble = AssignResult(
             num_gts=sum([res.num_gts for res in assign_result_list]),
             gt_inds=torch.cat([res.gt_inds for res in assign_result_list]),
-            max_overlaps=torch.cat([res.max_overlaps for res in assign_result_list]),
+            # `BUG`: in some tough case, num_gts==0, where max_overlaps is `None` and yields
+            # exception. It arises in `DistributedDataParallel`.
+            # max_overlaps=torch.cat([res.max_overlaps for res in assign_result_list]),
+            max_overlaps=torch.cat([res.max_overlaps if res.max_overlaps is not None else torch.full((1,), 1e-7) for res in assign_result_list]),
             labels=torch.cat([res.labels for res in assign_result_list]),
         )
         sampling_result = self.bbox_sampler.sample(
