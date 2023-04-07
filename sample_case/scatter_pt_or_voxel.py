@@ -32,13 +32,18 @@ def scatter_plot(x, y, z, _this_shape, _is_pcd=True, _dot_size=1, _scale_s=str):
     print("before plot:")
 
     fig = plt.figure()
-    ax = Axes3D(fig)
+    # This warning is matplotlib version specific.
+    # ax = Axes3D(fig)
+    ax = Axes3D(fig, auto_add_to_figure=False)
+    fig.add_axes(ax)
+
     if is_pcd is not True:
         ax.scatter(x, y, z, c=((x - _this_shape[0] / 2) ** 2 + (y - _this_shape[1] / 2) ** 2), s=_dot_size)
     else:
         ax.scatter(x, y, z, c=((x) ** 2 + (y) ** 2), s=_dot_size)
 
     _scale_r = ast.literal_eval(_scale_s)
+
     plt.gca().set_box_aspect(_scale_r)
     plt.xlabel("left 2 right.")
     plt.ylabel("back 2 front.")
